@@ -16,12 +16,12 @@ class parser:
         for i in range(numberOfLines):
             floatLine = []
             line = (textLines[i].split(", "))
-            for j in range(9):
+            numberOfColumns = len(line) 
+            for j in range(numberOfColumns):
                 # Se hace un cast a float
                 floatLine.append(float(line[j]))
             data.append(floatLine)
-        print(data)
-
-
+            # El siguiente print es solo para comprobaciones
+            print(floatLine)
 
 parser("datos.txt")

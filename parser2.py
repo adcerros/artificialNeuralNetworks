@@ -2,14 +2,22 @@ import sys
 import time
 import random
 import matplotlib.pyplot as plt
+import math
+
 
 class dataPreparator:
 
-    def __init__(self, path):
+    def __init__(self):
+        pass
+ 
+    def preparator(self, path):
         parsedData = self.parser(path)
         normalizedData = self.numberNormalizer(parsedData)
-        self.finalData = self.dataScrambler(normalizedData)
-
+        scrambledData = self.dataScrambler(normalizedData)
+        trainingSet, validationSet, testSet = self.dataPartitioner(scrambledData)
+        # El file creator es mas bien para pruebas
+        self.dataFileCreator(trainingSet, validationSet, testSet)
+        return trainingSet, validationSet, testSet
 
     # Parser de datos universal
     def parser(self, path):
@@ -29,10 +37,9 @@ class dataPreparator:
                 # Se hace un cast a float
                 floatLine.append(float(line[j]))
             data.append(floatLine)
-            # # El siguiente print es solo para comprobaciones
-            # print(floatLine)
         return data
 
+    # Normalizador de datos universal
     def numberNormalizer(self, data):
         numberOfRows = len(data)
         numberOfColumns = len(data[0])
@@ -56,15 +63,38 @@ class dataPreparator:
     # Desordenador de datos
     def dataScrambler(self, data):
         random.shuffle(data)
-        for i in range(len(data)):
-            print(data[i])
         return data
     
+    # Particionador de datos ad-hoc
+    def dataPartitioner(self, data):
+        numberOfRows = len(data)
+        trainingSet = data[:math.floor(numberOfRows * 0.7)]
+        validationSet = data[math.floor(numberOfRows * 0.7) : math.floor(numberOfRows * 0.85)]
+        testSet = data[math.floor(numberOfRows * 0.85) :]
+        return trainingSet, validationSet, testSet 
 
+    # Crea y escribe los ficheros de datos que contienen los distintos set 
+    def dataFileCreator(self, trainingSet, validationSet, testSet):
+        # Set de entrenamiento
+        trainingSetFile = open("trainingSet.txt", "w+")
+        for i in range(len(trainingSet)):
+            trainingSetFile.write(str(trainingSet[i]) + "\n")
+        trainingSetFile.write("@Numero de datos: " + str(len(trainingSet)))
+        # Set de validacion
+        validationSetFile = open("validationSet.txt", "w+")
+        for i in range(len(validationSet)):
+            validationSetFile.write(str(validationSet[i]) + "\n")
+        validationSetFile.write("@Numero de datos: " + str(len(validationSet)))
+        # Set de test
+        testSetFile = open("testSet.txt", "w+")
+        for i in range(len(testSet)):
+            testSetFile.write(str(testSet[i])+ "\n")
+        testSetFile.write("@Numero de datos: " + str(len(testSet)))
 
-
+    
 
 inicio = time.time()
-dataPreparator("datos.txt")
+mypreparator = dataPreparator()
+trainingSet, validationSet, testSet = mypreparator.preparator("datos.txt")
 fin = time.time()
 print("Tiempo ejecucion: " + str(fin-inicio))

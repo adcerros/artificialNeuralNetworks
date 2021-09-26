@@ -1,5 +1,3 @@
-import sys
-import time
 import random
 import matplotlib.pyplot as plt
 import math
@@ -93,8 +91,3 @@ class dataPreparator:
 
     
 
-inicio = time.time()
-mypreparator = dataPreparator()
-trainingSet, validationSet, testSet = mypreparator.preparator("datos.txt")
-fin = time.time()
-print("Tiempo ejecucion: " + str(fin-inicio))

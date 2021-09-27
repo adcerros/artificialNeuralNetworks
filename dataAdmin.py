@@ -2,6 +2,8 @@ import random
 import matplotlib.pyplot as plt
 import math
 
+from numpy import number
+
 
 class dataPreparator:
 
@@ -88,6 +90,17 @@ class dataPreparator:
         for i in range(len(testSet)):
             testSetFile.write(str(testSet[i])+ "\n")
         testSetFile.write("@Numero de datos: " + str(len(testSet)))
+
+    # Se dividen los datos en entradas y salidas deseadas
+    def getInOut(self, data):
+        numberOfRows = len(data)
+        numberOfColumns = len(data[0])
+        entries = []
+        desiredExits = []
+        for i in range(numberOfRows):
+            entries.append(data[i][:numberOfColumns-1])
+            desiredExits.append(data[i][numberOfColumns-1])
+        return entries, desiredExits
 
     
 

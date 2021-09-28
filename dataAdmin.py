@@ -1,5 +1,4 @@
 import random
-import matplotlib.pyplot as plt
 import math
 
 from numpy import number
@@ -37,6 +36,7 @@ class dataPreparator:
                 # Se hace un cast a float
                 floatLine.append(float(line[j]))
             data.append(floatLine)
+        filePointer.close()
         return data
 
     # Normalizador de datos universal

@@ -1,8 +1,8 @@
 import random
 import numpy as np
-from numpy.random.mtrand import permutation
+import matplotlib.pyplot as plt
 
-#Adaline model
+# Adaline model
 class neurone:
 
     def __init__(self, varNumber):
@@ -17,28 +17,45 @@ class neurone:
         # Se crean las listas de modelos y sus correspondientes errores
         models = []
         trainingErrors = []
+        validationErrors =[]
         # Se inicializan los pesos
-        numberOfRows = len(trainingIn)
+        trainingPatternsNumber = len(trainingIn)
         # Bucle de entrenamiento
-        for i in range(numberOfRounds):
-            for j in range (numberOfRows):
+        for round in range(numberOfRounds):
+            for i in range (trainingPatternsNumber):
                 exit = 0
-                error = 0
                 # Se calcula la salida
-                for k in range(self.varNumber):
-                    exit += trainingIn[j][k] * self.weights[k]
+                for j in range(self.varNumber):
+                    exit += trainingIn[i][j] * self.weights[j]
                 exit += self.threshold
-                error += abs(trainingOut[j] - exit)
                 # Si la salida no es la deseada se modifican los pesos y el umbral
-                if exit != trainingOut[j]:
-                    for k in range(self.varNumber):
-                        self.weights[k] = self.weights[k] + (learningRate * (trainingOut[j]-exit) * trainingIn[j][k])
-                    self.threshold = self.threshold + (learningRate * (trainingOut[j]-exit))
-            trainingErrors.append(error/numberOfRows)
-            models.append(self.weights)
-        print(trainingErrors[0])
-        print(trainingErrors[len(trainingErrors)-1])
-    print()
+                if exit != trainingOut[i]:
+                    for j in range(self.varNumber):
+                        self.weights[j] = self.weights[j] + (learningRate * (trainingOut[i]-exit) * trainingIn[i][j])
+                    self.threshold = self.threshold + (learningRate * (trainingOut[i]-exit))
+            models.append(self.weights)          
+            # Calculo del error de entrenamiento
+            trainingErrors.append(self.errorCalculator(trainingIn, trainingOut))
+            # Calculo error validacion
+            validationErrors.append(self.errorCalculator(validationIn, validationOut))
+        
+        
+        fig, ax = plt.subplots()
+        ax.plot(trainingErrors)
+        ax.plot(validationErrors)
+        plt.show()
+    
+    def errorCalculator(self, dataIn, dataOut): 
+        error = 0   
+        patternNumber = len(dataIn)
+        for i in range(patternNumber):
+            exit = 0
+            # Se calcula la salida
+            for j in range(self.varNumber):
+                exit += dataIn[i][j] * self.weights[j]
+            exit += self.threshold
+            error += abs(dataOut[i] - exit)
+        return(error/patternNumber)       
 
                 
 

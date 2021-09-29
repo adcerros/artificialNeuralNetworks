@@ -41,7 +41,7 @@ class neurone:
             if round > 100:
                 if (round % 5) == 0:
                     if abs(self.validationErrors[round]-self.validationErrors[round-50]) < 0.000001:
-                        print("\n!!!!Se ha detectado una estabilizcion del error en la ronda: " + str(round + 1) + " !!!!")
+                        print("\n!!!!Se ha detectado una estabilizcion del error en la ronda: " + str(round + 1) + " !!!!\n")
                         return self.trainingErrors, self.validationErrors 
         return self.trainingErrors, self.validationErrors 
 

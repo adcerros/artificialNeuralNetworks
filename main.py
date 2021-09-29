@@ -42,7 +42,7 @@ print("\nError de entrenamiento: " + str(denormalizedModelTrainingError))
 print("Error de validacion: " + str(denormalizedModelValidationError))
 print("Diferencia entre el error de entrenamiento y de validacion: " + str(abs(denormalizedModelTrainingError - denormalizedModelValidationError)))
 print("Error de test: " + str(denormalizedModelTestError))
-print("Error medio: " + str((denormalizedModelTrainingError + denormalizedModelValidationError)/3))
+print("Error medio: " + str((denormalizedModelTrainingError + denormalizedModelValidationError + denormalizedModelTestError)/3))
 
 
 fin = time.time()

@@ -44,21 +44,42 @@ class dataPreparator:
         numberOfRows = len(data)
         numberOfColumns = len(data[0])
         # Se inicializan los valores
-        listOfMax = list(data[0])
-        listOfMin = list(data[0])
+        self.listOfMax = list(data[0])
+        self.listOfMin = list(data[0])
         # Busqueda de maximos y minimos
         for i in range(numberOfRows):
+            currentPattern = data[i]
             for j in range(numberOfColumns):
-                currentElement = data[i][j]
-                if currentElement > listOfMax[j]:
-                    listOfMax[j] = currentElement
-                if currentElement < listOfMin[j]:
-                    listOfMin[j] = currentElement
+                currentElement = currentPattern[j]
+                if currentElement > self.listOfMax[j]:
+                    self.listOfMax[j] = currentElement
+                if currentElement < self.listOfMin[j]:
+                    self.listOfMin[j] = currentElement
         # Normalizacion
         for i in range(numberOfRows):
+            currentPattern = data[i]
             for j in range(numberOfColumns):
-                data[i][j] = (data[i][j] - listOfMin[j])/(listOfMax[j]-listOfMin[j])
+                currentPattern[j] = (currentPattern[j] - self.listOfMin[j])/(self.listOfMax[j]-self.listOfMin[j])
         return data
+    
+    # Denormalizador de los errores
+    def denormalizeErrors(self, listOfErrors):
+        denormalizedErrors = []
+        # Posicion de la lista donde se encuentran los resultados
+        resultsPosition = len(self.listOfMin)-1
+        minError = self.listOfMin[resultsPosition]
+        maxError = self.listOfMax[resultsPosition]
+        errorsRows = len(listOfErrors)
+        for i in range(errorsRows):
+            currentError = (listOfErrors[i] * (maxError - minError)) + minError 
+            denormalizedErrors.append(currentError)
+        return denormalizedErrors
+
+    def denormalizeSingleError(self, error):
+        resultsPosition = len(self.listOfMin)-1
+        minError = self.listOfMin[resultsPosition]
+        maxError = self.listOfMax[resultsPosition]
+        return (error * (maxError - minError)) + minError 
 
     # Desordenador de datos universal
     def dataScrambler(self, data):
@@ -101,6 +122,7 @@ class dataPreparator:
             entries.append(data[i][:numberOfColumns-1])
             desiredExits.append(data[i][numberOfColumns-1])
         return entries, desiredExits
+
 
     
 

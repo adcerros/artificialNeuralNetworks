@@ -20,23 +20,22 @@ class dataPreparator:
 
     # Parser de datos universal
     def parser(self, path):
-        # Se leen las lineas y se limpian los saltos de linea
+        # Se leen las lineas 
         filePointer = open(path, "r")
         textLines = filePointer.readlines()
         numberOfLines = len(textLines)
-        for i in range(numberOfLines):
-            if "@" not in textLines[i]:
-                textLines[i] = textLines[i].strip('\n')
-        # Construccion matriz de datos
+        # Construccion matriz de datos y limpieza de datos
         data = []
         for i in range(numberOfLines):
-            floatLine = []
-            line = (textLines[i].split(", "))
-            numberOfColumns = len(line)
-            for j in range(numberOfColumns):
-                # Se hace un cast a float
-                floatLine.append(float(line[j]))
-            data.append(floatLine)
+            if "@" not in textLines[i]:
+                floatLine = []
+                textLines[i] = textLines[i].strip('\n')
+                line = (textLines[i].split(", "))
+                numberOfColumns = len(line)
+                for j in range(numberOfColumns):
+                    # Se hace un cast a float
+                    floatLine.append(float(line[j]))
+                data.append(floatLine)
         filePointer.close()
         return data
 

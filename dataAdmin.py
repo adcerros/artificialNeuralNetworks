@@ -136,6 +136,7 @@ class dataPreparator:
         testPatternsNumber = len(testExpectedOut)
         testExpectedOutNormalized = self.denormalizeErrors(testExpectedOut)
         testOutNormalized = self.denormalizeErrors(testOut)
+        testExitsFile.write("** Numeros truncados a dos cifras decimales **\n")
         testExitsFile.write("Ronda \t\tSalida esperada \tSalida obtenida\n")
         for i in range(testPatternsNumber):
             testExitsFile.write("\t" + str(i + 1) +  " \t\t" + str(round(testExpectedOutNormalized[i], 2)) + " \t\t\t\t" + str(round(testOutNormalized[i], 2)) + "\n")

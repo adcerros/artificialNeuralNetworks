@@ -10,7 +10,7 @@ print()
 
 
 NUMBEROFCICLES = 10000
-LEARNINGRATE = 0.00001
+LEARNINGRATE = 0.001
 # Preparacion de los conjuntos de datos
 myPreparator = dataPreparator()
 trainingSet, validationSet, testSet = myPreparator.preparator("datos.txt")

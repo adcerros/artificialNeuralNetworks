@@ -8,6 +8,7 @@ class dataPreparator:
     def __init__(self):
         random.seed(1000)
  
+    # Funcion principal
     def preparator(self, path):
         parsedData = self.parser(path)
         normalizedData = self.numberNormalizer(parsedData)
@@ -97,19 +98,26 @@ class dataPreparator:
     def dataFileCreator(self, trainingSet, validationSet, testSet):
         # Set de entrenamiento
         trainingSetFile = open("trainingSet.txt", "w+")
-        for i in range(len(trainingSet)):
+        trainingSetPatternsNumber = len(trainingSet)
+        for i in range(trainingSetPatternsNumber):
             trainingSetFile.write(str(trainingSet[i]) + "\n")
-        trainingSetFile.write("@Numero de datos: " + str(len(trainingSet)))
+        trainingSetFile.write("@Numero de datos: " + str(trainingSetPatternsNumber))
+        trainingSetFile.close()
         # Set de validacion
         validationSetFile = open("validationSet.txt", "w+")
-        for i in range(len(validationSet)):
+        validationSetPatternsNumber = len(validationSet)
+        for i in range(validationSetPatternsNumber):
             validationSetFile.write(str(validationSet[i]) + "\n")
-        validationSetFile.write("@Numero de datos: " + str(len(validationSet)))
+        validationSetFile.write("@Numero de datos: " + str(validationSetPatternsNumber))
+        validationSetFile.close()
         # Set de test
         testSetFile = open("testSet.txt", "w+")
-        for i in range(len(testSet)):
+        testSetPatternsNumber = len(testSet)
+        for i in range(testSetPatternsNumber):
             testSetFile.write(str(testSet[i])+ "\n")
-        testSetFile.write("@Numero de datos: " + str(len(testSet)))
+        testSetFile.write("@Numero de datos: " + str(testSetPatternsNumber))
+        testSetFile.close()
+        
 
     # Se dividen los datos en entradas y salidas deseadas
     def getInOut(self, data):
@@ -122,6 +130,16 @@ class dataPreparator:
             desiredExits.append(data[i][numberOfColumns-1])
         return entries, desiredExits
 
-
+    # Crea y escribe los ficheros del test
+    def getTestDocumentation(self, testExpectedOut, testOut):
+        testExitsFile = open("testExits.txt", "w+")
+        testPatternsNumber = len(testExpectedOut)
+        testExpectedOutNormalized = self.denormalizeErrors(testExpectedOut)
+        testOutNormalized = self.denormalizeErrors(testOut)
+        testExitsFile.write("Ronda \t\tSalida esperada \tSalida obtenida\n")
+        for i in range(testPatternsNumber):
+            testExitsFile.write("\t" + str(i + 1) +  " \t\t" + str(round(testExpectedOutNormalized[i], 2)) + " \t\t\t\t" + str(round(testOutNormalized[i], 2)) + "\n")
+        testExitsFile.write("@Numero de datos: " + str(testPatternsNumber))
+        testExitsFile.close()
     
 

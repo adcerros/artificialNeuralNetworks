@@ -8,15 +8,16 @@ import matplotlib.pyplot as plt
 inicio = time.time()
 print()
 
-
+# Parametros de la neurona
 NUMBEROFCICLES = 10000
 LEARNINGRATE = 0.001
+
 # Preparacion de los conjuntos de datos
 myPreparator = dataPreparator()
 trainingSet, validationSet, testSet = myPreparator.preparator("datos.txt")
 trainingIn, trainingOut = myPreparator.getInOut(trainingSet)
 validationIn, validationOut = myPreparator.getInOut(validationSet)
-testIn, testOut = myPreparator.getInOut(testSet)
+testIn, testExpectedOut = myPreparator.getInOut(testSet)
 
 # Entrenamiento y obtencion del modelo
 myNeurone = neurone(8)
@@ -24,14 +25,15 @@ trainingError , validationError = myNeurone.train(trainingIn, trainingOut, valid
 model, modelRound, modelTrainingError, modelValidationError = myNeurone.getBestModel()
 
 # Test
-modelTestError = myNeurone.test(model[0], model[1], testIn, testOut)
+modelTestError, testExits = myNeurone.test(model[0], model[1], testIn, testExpectedOut)
+myPreparator.getTestDocumentation(testExpectedOut, testExits)
 print("/////////DATOS DEL MODELO FINAL////////////")
 print("\nModelo final: " + str(model))
 # Muestra de resultados
+print("*** Se ha utilizado el error cuadratico medio ***")
 print("\nRonda donde se consigue el modelo: " + str(modelRound + 1))
 print("\nError de entrenamiento: " + str(modelTrainingError))
 print("Error de validacion: " + str(modelValidationError))
-print("Diferencia entre el error de entrenamiento y de validacion: " + str(abs(modelTrainingError - modelValidationError)))
 print("Error de test: " + str(modelTestError))
 print("Error medio: " + str((modelTrainingError + modelValidationError + modelTestError)/3))
 

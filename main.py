@@ -10,7 +10,7 @@ print()
 
 
 NUMBEROFCICLES = 10000
-LEARNINGRATE = 0.001
+LEARNINGRATE = 0.00001
 # Preparacion de los conjuntos de datos
 myPreparator = dataPreparator()
 trainingSet, validationSet, testSet = myPreparator.preparator("datos.txt")
@@ -27,22 +27,13 @@ model, modelRound, modelTrainingError, modelValidationError = myNeurone.getBestM
 modelTestError = myNeurone.test(model[0], model[1], testIn, testOut)
 print("/////////DATOS DEL MODELO FINAL////////////")
 print("\nModelo final: " + str(model))
-
-
-# Denormalizacion de los datos
-trainingErrorsDenormalized = myPreparator.denormalizeErrors(trainingError)
-validationErrorsDenormalized = myPreparator.denormalizeErrors(validationError)
-denormalizedModelTrainingError = myPreparator.denormalizeSingleError(modelTrainingError)
-denormalizedModelValidationError = myPreparator.denormalizeSingleError(modelValidationError)
-denormalizedModelTestError = myPreparator.denormalizeSingleError(modelTestError)
-
 # Muestra de resultados
 print("\nRonda donde se consigue el modelo: " + str(modelRound + 1))
-print("\nError de entrenamiento: " + str(denormalizedModelTrainingError))
-print("Error de validacion: " + str(denormalizedModelValidationError))
-print("Diferencia entre el error de entrenamiento y de validacion: " + str(abs(denormalizedModelTrainingError - denormalizedModelValidationError)))
-print("Error de test: " + str(denormalizedModelTestError))
-print("Error medio: " + str((denormalizedModelTrainingError + denormalizedModelValidationError + denormalizedModelTestError)/3))
+print("\nError de entrenamiento: " + str(modelTrainingError))
+print("Error de validacion: " + str(modelValidationError))
+print("Diferencia entre el error de entrenamiento y de validacion: " + str(abs(modelTrainingError - modelValidationError)))
+print("Error de test: " + str(modelTestError))
+print("Error medio: " + str((modelTrainingError + modelValidationError + modelTestError)/3))
 
 
 fin = time.time()
@@ -50,8 +41,8 @@ print("\nTiempo ejecucion: " + str(fin-inicio))
 
 # Grafico de errores
 Errores, ax = plt.subplots()
-ax.plot(trainingErrorsDenormalized, color = 'tab:blue', label = 'trainingError')
-ax.plot(validationErrorsDenormalized, color = 'tab:red' , label = 'validationError')
+ax.plot(trainingError, color = 'tab:blue', label = 'trainingError')
+ax.plot(validationError, color = 'tab:red' , label = 'validationError')
 ax.grid(axis = 'y', color = 'gray', linestyle = 'dashed')
 ax.legend(loc = 'upper right')
 

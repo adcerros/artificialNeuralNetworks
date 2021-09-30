@@ -1,13 +1,12 @@
 import random
 import math
-
 from numpy import number
 
 
 class dataPreparator:
 
     def __init__(self):
-        pass
+        random.seed(1000)
  
     def preparator(self, path):
         parsedData = self.parser(path)

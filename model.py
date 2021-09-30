@@ -82,7 +82,7 @@ class neurone:
             for j in range(self.varNumber):
                 exit += currentData[j] * self.weights[j]
             exit += self.threshold
-            error += abs(dataOut[i] - exit)
+            error += (dataOut[i] - exit)**2
         return(error/patternNumber)       
 
 

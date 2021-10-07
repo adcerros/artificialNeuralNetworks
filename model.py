@@ -1,5 +1,4 @@
 import random
-import matplotlib.pyplot as plt
 import copy
 
 
@@ -25,26 +24,25 @@ class neurone:
         # Bucle de entrenamiento
         for round in range(numberOfRounds):
             for i in range (trainingPatternsNumber):
-                exit = 0
                 currentPattern = trainingIn[i]
                 # Se calcula la salida
+                exit = self.threshold
                 for j in range(self.varNumber):
                     exit += currentPattern[j] * self.weights[j]
-                exit += self.threshold
                 # Si la salida no es la deseada se modifican los pesos y el umbral
                 desiredExit = trainingOut[i]
                 if exit != desiredExit:
+                    delta = learningRate * (desiredExit-exit)
                     for j in range(self.varNumber):
-                        self.weights[j] = self.weights[j] + (learningRate * (desiredExit-exit) * currentPattern[j])
-                    self.threshold = self.threshold + (learningRate * (desiredExit-exit))
+                        self.weights[j] += delta * currentPattern[j]
+                    self.threshold += delta
             # Se almacena el modelo y sus errores de entrenamiento y validacion
             self.setModelAndErrors(trainingIn, trainingOut, validationIn, validationOut)
             # Deteccion de estabilizacion del error a partir de la ronda 100 cada 5 rondas
-            if round > 100:
-                if (round % 5) == 0:
-                    if abs(self.validationErrors[round]-self.validationErrors[round-50]) < 0.000001:
-                        print("\n!!!!Se ha detectado una estabilizcion del error en la ronda: " + str(round + 1) + " !!!!\n")
-                        return self.trainingErrors, self.validationErrors 
+            if round > 100 and (round % 5) == 0:
+                if abs(self.validationErrors[round]-self.validationErrors[round-50]) < 0.000001:
+                    print("\n!!!!Se ha detectado una estabilizcion del error en la ronda: " + str(round + 1) + " !!!!\n")
+                    return self.trainingErrors, self.validationErrors 
         return self.trainingErrors, self.validationErrors 
 
     # Se almacena el modelo y sus errores en sus respectivas listas
@@ -54,8 +52,8 @@ class neurone:
         model.append(self.threshold)
         self.models.append(model)
         # Calculo del errores
-        self.trainingErrors.append(self.errorCalculator(trainingIn, trainingOut))
-        self.validationErrors.append(self.errorCalculator(validationIn, validationOut))
+        self.trainingErrors.append(self.errorAndExitsCalculator(trainingIn, trainingOut)[0])
+        self.validationErrors.append(self.errorAndExitsCalculator(validationIn, validationOut)[0])
 
     # Retorna una lista con todos los modelos  
     def getAllModels(self):
@@ -78,6 +76,7 @@ class neurone:
         self.threshold = newThreshold
         return self.errorAndExitsCalculator(testIn, testOut)
     
+    '''
     # Calcula los errores de los conjuntos proporcionados devuelve el error cuadratico medio
     def errorCalculator(self, dataIn, dataOut): 
         error = 0   
@@ -90,7 +89,8 @@ class neurone:
                 exit += currentData[j] * self.weights[j]
             exit += self.threshold
             error += (dataOut[i] - exit)**2
-        return (error/patternNumber)       
+        return (error/patternNumber)   
+    '''    
 
     # Calcula los errores de los conjuntos proporcionados y devuelve el error y las salidas esperadas y obtenidas
     def errorAndExitsCalculator(self, dataIn, dataOut): 

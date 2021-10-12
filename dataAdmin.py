@@ -1,12 +1,11 @@
 import random
 import math
-from numpy import number
-
 
 class dataPreparator:
 
     def __init__(self):
         random.seed(1000)
+        pass
  
     # Funcion principal
     def preparator(self, path):

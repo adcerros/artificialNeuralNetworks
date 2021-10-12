@@ -10,11 +10,11 @@ print()
 
 # Parametros de la neurona
 NUMBEROFCICLES = 10000
-LEARNINGRATE = 0.001
+LEARNINGRATE = 0.025
 
 # Preparacion de los conjuntos de datos
 myPreparator = dataPreparator()
-trainingSet, validationSet, testSet = myPreparator.preparator("datos.txt")
+trainingSet, validationSet, testSet = myPreparator.preparator("concrete.dat")
 trainingIn, trainingOut = myPreparator.getInOut(trainingSet)
 validationIn, validationOut = myPreparator.getInOut(validationSet)
 testIn, testExpectedOut = myPreparator.getInOut(testSet)

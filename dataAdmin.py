@@ -131,15 +131,36 @@ class dataPreparator:
 
     # Crea y escribe los ficheros del test
     def getTestDocumentation(self, testExpectedOut, testOut):
-        testExitsFile = open("testExits.txt", "w+")
-        testPatternsNumber = len(testExpectedOut)
-        testExpectedOutNormalized = self.denormalizeErrors(testExpectedOut)
-        testOutNormalized = self.denormalizeErrors(testOut)
-        testExitsFile.write("** Numeros truncados a dos cifras decimales **\n")
-        testExitsFile.write("Ronda \t\tSalida esperada \tSalida obtenida\n")
-        for i in range(testPatternsNumber):
-            testExitsFile.write("\t" + str(i + 1) +  " \t\t" + str(round(testExpectedOutNormalized[i], 2)) + " \t\t\t\t" + str(round(testOutNormalized[i], 2)) + "\n")
-        testExitsFile.write("@Numero de datos: " + str(testPatternsNumber))
+        inOrderTestExpectedOut, inOrderTestOut = self.inOrderOutput(testExpectedOut, testOut)
+        testExpectedOutNormalized = self.denormalizeErrors(inOrderTestExpectedOut)
+        testOutNormalized = self.denormalizeErrors(inOrderTestOut)
+
+        testExitsFile = open("testExits.csv", "w+")
+        testExitsFile.write('"";"pred";"obs"\n')
+        for i in range(len(testExpectedOut)):
+            testExitsFile.write('"' + str(i + 1) +  '";' + str(testExpectedOutNormalized[i]) + ';' + str(testOutNormalized[i]) + "\n")
         testExitsFile.close()
+
+    def inOrderOutput(self, testExpectedOut, testOut):
+        inOrder = False
+        while not inOrder:
+            inOrder = True
+            for i in range(len(testOut)-1):
+                if testOut[i] > testOut[i+1]:
+                    inOrder = False
+                    aux = testOut[i]
+                    testOut[i] = testOut[i+1]
+                    testOut[i+1] = aux
+                    aux = testExpectedOut[i]
+                    testExpectedOut[i] = testExpectedOut[i+1]
+                    testExpectedOut[i+1] = aux
+        return testExpectedOut, testOut
+
+    def dataFromCsv():
+        pass
+
+
+
+        
     
 
